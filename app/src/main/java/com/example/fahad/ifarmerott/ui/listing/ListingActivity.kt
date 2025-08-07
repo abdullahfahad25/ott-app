@@ -1,6 +1,7 @@
 package com.example.fahad.ifarmerott.ui.listing
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,8 +16,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ListingActivity : AppCompatActivity() {
+    private val TAG = "ListingActivity"
     private val FIELD_QUERY = "query"
     private val DEFAULT_QUERY = "2022"
+    private val PAGE_ITEM_LIMIT = 10
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
@@ -26,6 +29,8 @@ class ListingActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
     private var currentPage = 1
+    private var isLoading = false
+    private var isLastPage = false
     private val query: String by lazy { intent.getStringExtra(FIELD_QUERY) ?: DEFAULT_QUERY }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,23 +43,64 @@ class ListingActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+        setupScrollListener()
         loadMovies(currentPage)
-        //todo: setup scroll listener
+    }
+
+    private fun setupScrollListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                if (dy <= 0) 
+                    return
+
+                val layoutManager = rv.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                Log.d(TAG, "onScrolled: visibleItemCount = ${visibleItemCount}, " +
+                        "totalItemCount = ${totalItemCount}, " +
+                        "firstVisibleItemPosition = ${firstVisibleItemPosition}")
+
+                if (!isLoading && !isLastPage) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - 5
+                        && firstVisibleItemPosition >= 0) {
+                        loadMovies(currentPage + 1)
+                    }
+                }
+            }
+        })
     }
 
     private fun loadMovies(page: Int) {
+        isLoading = true
         scope.launch {
             try {
+                //Default filter value is '2022'
                 val response = viewModel.searchMovies(query, page)
+                Log.d(TAG, "loadMovies: page = ${page}, Search size = ${response.Search.size}")
+                
                 if (response.Response == "True") {
-                    adapter.submitList(response.Search)
-                    //todo: update for infinite loading
+                    if (page == 1) {
+                        adapter.submitList(response.Search)
+                    } else {
+                        val currentList = adapter.movies.toMutableList()
+                        currentList.addAll(response.Search)
+                        adapter.submitList(currentList)
+                    }
+                    currentPage = page
+                    // If less than 10 results (OMDB default page size), consider last page
+                    if (response.Search.size < PAGE_ITEM_LIMIT) {
+                        isLastPage = true
+                    }
                 } else {
-                    Toast.makeText(this@ListingActivity, "No response", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ListingActivity, "No more results", Toast.LENGTH_SHORT).show()
+                    isLastPage = true
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@ListingActivity, "Error loading movies", Toast.LENGTH_SHORT).show()
             }
+
+            isLoading = false
         }
     }
 

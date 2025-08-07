@@ -1,5 +1,6 @@
 package com.example.fahad.ifarmerott.ui.listing
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,14 @@ import com.example.fahad.ifarmerott.R
 import com.example.fahad.ifarmerott.data.model.Movie
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+    private val TAG = "MovieAdapter"
+
     val movies = mutableListOf<Movie>()
 
     fun submitList(list: List<Movie>) {
         movies.clear()
         movies.addAll(list)
+        Log.d(TAG, "submitList: list size = ${movies.size}")
         notifyDataSetChanged()      //todo: optimization
     }
 
@@ -35,6 +39,9 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         private val titleTextView: TextView = itemView.findViewById(R.id.movieTitle)
 
         fun bind(movie: Movie) {
+            Log.d("MovieAdapter", "bind: movie title = ${movie.Title}," +
+                    "url = ${movie.Poster}")
+
             titleTextView.text = movie.Title
             Glide.with(itemView.context)
                 .load(movie.Poster)
