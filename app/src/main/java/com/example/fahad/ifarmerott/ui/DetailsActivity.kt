@@ -1,5 +1,6 @@
 package com.example.fahad.ifarmerott.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -8,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.fahad.ifarmerott.R
@@ -23,6 +25,7 @@ class DetailsActivity : AppCompatActivity() {
     private val TAG = "DetailsActivity"
     private val IMDB_ID = "imdbID"
     private val DEFAULT_ID = "tt1285016"
+    private val VIDEO_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
 
     private lateinit var player: ExoPlayer
     private lateinit var titleTextView: TextView
@@ -61,6 +64,7 @@ class DetailsActivity : AppCompatActivity() {
                 Log.d(TAG, "loadMovieDetails: $response")
                 if (response?.Response == "True") {
                     setupViews(response)
+                    displayVideo()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@DetailsActivity, "Failed to load movie details", Toast.LENGTH_SHORT).show()
@@ -73,8 +77,15 @@ class DetailsActivity : AppCompatActivity() {
         descriptionTextView.text =  movie.Plot
     }
 
+    private fun displayVideo() {
+        player.setMediaItem(MediaItem.fromUri(Uri.parse(VIDEO_URL)))
+        player.prepare()
+        player.play()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        player.release()
         job.cancel()
     }
 }
