@@ -1,5 +1,7 @@
 package com.example.fahad.ifarmerott.ui
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +39,9 @@ class DetailsActivity : AppCompatActivity() {
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
+    private lateinit var sharedPreferences: SharedPreferences
+    private var currentPosition: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,6 +49,8 @@ class DetailsActivity : AppCompatActivity() {
 
         titleTextView = findViewById(R.id.movieTitle)
         descriptionTextView = findViewById(R.id.movieDescription)
+
+        sharedPreferences = getSharedPreferences("player_prefs", Context.MODE_PRIVATE)
 
         imdbId = intent.getStringExtra(IMDB_ID) ?: DEFAULT_ID
 
@@ -78,9 +85,18 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     private fun displayVideo() {
+        val savedPosition = sharedPreferences.getLong(imdbId, 0)
         player.setMediaItem(MediaItem.fromUri(Uri.parse(VIDEO_URL)))
         player.prepare()
+        player.seekTo(savedPosition)
         player.play()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        currentPosition = player.currentPosition
+        sharedPreferences.edit().putLong(imdbId, currentPosition).apply()
+        player.pause()
     }
 
     override fun onDestroy() {
