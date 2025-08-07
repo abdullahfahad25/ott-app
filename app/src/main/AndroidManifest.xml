@@ -18,7 +18,7 @@
             android:name=".ui.DetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.ListingActivity"
+            android:name=".ui.listing.ListingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.HomeActivity"
