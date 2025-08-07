@@ -14,4 +14,8 @@ class HomeViewModel(
     suspend fun loadLatestMovies(): MovieResponse {
         return repository.searchMovies("movie", 1, "2022")
     }
+
+    suspend fun loadCarouselMovies(): MovieResponse {
+        return repository.searchMovies("Marvel", 1)
+    }
 }

@@ -1,53 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
 android:padding="16dp">
 
-<!-- Carousel (5 Banners) -->
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Featured"
-    android:textStyle="bold"
-    android:textSize="18sp"
-    android:layout_marginBottom="8dp" />
+    <!-- Carousel (5 Banners) -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Featured"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/carouselRecyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:orientation="horizontal" />
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/carouselViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginBottom="16dp"
+        android:clipToPadding="false"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:overScrollMode="never" />
 
-<!-- Rail 1: Batman -->
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Batman Movies"
-    android:textStyle="bold"
-    android:textSize="18sp"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="8dp" />
+    <!-- Rail 1: Batman -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Batman Movies"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/batmanRecyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:orientation="horizontal" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/batmanRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="horizontal" />
 
-<!-- Rail 2: Latest -->
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Latest Movies"
-    android:textStyle="bold"
-    android:textSize="18sp"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="8dp" />
+    <!-- Rail 2: Latest -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Latest Movies"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/latestRecyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:orientation="horizontal" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/latestRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="horizontal" />
 </LinearLayout>
