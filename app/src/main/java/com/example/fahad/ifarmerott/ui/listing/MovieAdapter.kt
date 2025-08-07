@@ -1,5 +1,6 @@
 package com.example.fahad.ifarmerott.ui.listing
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fahad.ifarmerott.R
 import com.example.fahad.ifarmerott.data.model.Movie
+import com.example.fahad.ifarmerott.ui.DetailsActivity
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     private val TAG = "MovieAdapter"
@@ -29,7 +31,17 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(movies[position])
+        val movie = movies[position]
+        holder.itemView.setOnClickListener {
+            val context = it.context
+            val intent = Intent(context, DetailsActivity::class.java).apply {
+                putExtra("imdbID", movie.imdbID)
+            }
+
+            context.startActivity(intent)
+        }
+
+        holder.bind(movie)
     }
 
     override fun getItemCount(): Int = movies.size
