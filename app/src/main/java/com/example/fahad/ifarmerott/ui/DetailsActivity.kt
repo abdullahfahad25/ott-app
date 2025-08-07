@@ -1,6 +1,7 @@
 package com.example.fahad.ifarmerott.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.fahad.ifarmerott.R
+import com.example.fahad.ifarmerott.data.model.Movie
 import com.example.fahad.ifarmerott.repository.MovieRepository
 import com.example.fahad.ifarmerott.viewmodel.DetailsViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -18,8 +20,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class DetailsActivity : AppCompatActivity() {
+    private val TAG = "DetailsActivity"
     private val IMDB_ID = "imdbID"
-    private val DEFAULT_ID = ""
+    private val DEFAULT_ID = "tt1285016"
 
     private lateinit var player: ExoPlayer
     private lateinit var titleTextView: TextView
@@ -55,12 +58,23 @@ class DetailsActivity : AppCompatActivity() {
         scope.launch {
             try {
                 val response = viewModel.getMovieDetails(imdbId)
-                if (response.Response == "True") {
-                    //todo: set up text views
+                Log.d(TAG, "loadMovieDetails: $response")
+                if (response?.Response == "True") {
+                    setupViews(response)
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@DetailsActivity, "Failed to load movie details", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun setupViews(movie: Movie) {
+        titleTextView.text = movie.Title
+        descriptionTextView.text =  movie.Plot
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 }
