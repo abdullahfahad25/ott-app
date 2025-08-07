@@ -16,7 +16,7 @@ interface OmdbService {
 
     @GET("/")
     suspend fun getMovieDetails(
-        @Query("i") imdbId: String,
-        @Query("apikey") apiKey: String
+        @Query("apikey") apiKey: String,
+        @Query("i") imdbId: String
     ): Movie?
 }
