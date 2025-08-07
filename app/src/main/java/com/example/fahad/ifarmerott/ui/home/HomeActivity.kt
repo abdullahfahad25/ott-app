@@ -1,7 +1,9 @@
 package com.example.fahad.ifarmerott.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.fahad.ifarmerott.R
 import com.example.fahad.ifarmerott.repository.MovieRepository
+import com.example.fahad.ifarmerott.ui.listing.ListingActivity
 import com.example.fahad.ifarmerott.ui.listing.MovieAdapter
 import com.example.fahad.ifarmerott.viewmodel.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -26,6 +29,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var latestAdapter: MovieAdapter
     private lateinit var carouselAdapter: CarouselAdapter
 
+    private lateinit var seeAllLatest: TextView
+
     private val viewModel = HomeViewModel(MovieRepository())
 
     private val job = Job()
@@ -39,6 +44,7 @@ class HomeActivity : AppCompatActivity() {
         carouselViewPager = findViewById(R.id.carouselViewPager)
         batmanRecyclerView = findViewById(R.id.batmanRecyclerView)
         latestRecyclerView = findViewById(R.id.latestRecyclerView)
+        seeAllLatest = findViewById(R.id.seeAllLatest)
 
         carouselAdapter = CarouselAdapter()
         batmanAdapter = MovieAdapter()
@@ -51,16 +57,25 @@ class HomeActivity : AppCompatActivity() {
         batmanRecyclerView.adapter = batmanAdapter
         latestRecyclerView.adapter = latestAdapter
 
+        setupClickListeners()
+
         loadCarouselMovies()
         loadBatmanMovies()
         loadLatestMovies()
+    }
+
+    private fun setupClickListeners() {
+        seeAllLatest.setOnClickListener {
+            val intent = Intent(this, ListingActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun loadCarouselMovies() {
         scope.launch {
             try {
                 val response = viewModel.loadCarouselMovies()
-                Log.d(TAG, "loadBatmanMovies: $response")
+                Log.d(TAG, "loadCarouselMovies: $response")
 
                 if (response.Response == "True") {
                     carouselAdapter.submitList(response.Search.take(5))

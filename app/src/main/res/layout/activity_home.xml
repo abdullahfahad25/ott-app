@@ -41,14 +41,33 @@ android:padding="16dp">
         android:orientation="horizontal" />
 
     <!-- Rail 2: Latest -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Latest Movies"
-        android:textStyle="bold"
-        android:textSize="18sp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content"
+            android:text="Latest Movies"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/seeAllLatest"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:text="See All >"
+            android:gravity="end"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/latestRecyclerView"
