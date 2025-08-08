@@ -1,4 +1,4 @@
-package com.example.fahad.ifarmerott.ui.home
+package com.example.fahad.ifarmerott.home.ui
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fahad.ifarmerott.R
-import com.example.fahad.ifarmerott.data.model.Movie
-import com.example.fahad.ifarmerott.ui.DetailsActivity
+import com.example.fahad.ifarmerott.common.data.model.Movie
+import com.example.fahad.ifarmerott.details.ui.DetailsActivity
 
 class CarouselAdapter: RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
     private val movies = mutableListOf<Movie>()

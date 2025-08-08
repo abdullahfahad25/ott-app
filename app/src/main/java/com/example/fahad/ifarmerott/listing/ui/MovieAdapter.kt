@@ -1,4 +1,4 @@
-package com.example.fahad.ifarmerott.ui.listing
+package com.example.fahad.ifarmerott.listing.ui
 
 import android.content.Intent
 import android.util.Log
@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fahad.ifarmerott.R
-import com.example.fahad.ifarmerott.data.model.Movie
-import com.example.fahad.ifarmerott.ui.DetailsActivity
+import com.example.fahad.ifarmerott.common.data.model.Movie
+import com.example.fahad.ifarmerott.details.ui.DetailsActivity
 
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     private val TAG = "MovieAdapter"

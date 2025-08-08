@@ -1,4 +1,4 @@
-package com.example.fahad.ifarmerott.ui.home
+package com.example.fahad.ifarmerott.home.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.fahad.ifarmerott.R
-import com.example.fahad.ifarmerott.repository.MovieRepository
-import com.example.fahad.ifarmerott.ui.listing.ListingActivity
-import com.example.fahad.ifarmerott.ui.listing.MovieAdapter
-import com.example.fahad.ifarmerott.viewmodel.HomeViewModel
+import com.example.fahad.ifarmerott.common.repository.MovieRepository
+import com.example.fahad.ifarmerott.home.viewmodel.HomeViewModel
+import com.example.fahad.ifarmerott.listing.ui.ListingActivity
+import com.example.fahad.ifarmerott.listing.ui.MovieAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

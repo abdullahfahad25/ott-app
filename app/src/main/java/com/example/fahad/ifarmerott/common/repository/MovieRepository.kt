@@ -1,8 +1,8 @@
-package com.example.fahad.ifarmerott.repository
+package com.example.fahad.ifarmerott.common.repository
 
-import com.example.fahad.ifarmerott.data.api.RetrofitInstance
-import com.example.fahad.ifarmerott.data.model.Movie
-import com.example.fahad.ifarmerott.data.model.MovieResponse
+import com.example.fahad.ifarmerott.common.data.api.RetrofitInstance
+import com.example.fahad.ifarmerott.common.data.model.Movie
+import com.example.fahad.ifarmerott.common.data.model.MovieResponse
 import com.example.fahad.ifarmerott.utils.Constants
 
 class MovieRepository {

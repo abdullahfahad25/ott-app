@@ -1,4 +1,4 @@
-package com.example.fahad.ifarmerott.ui
+package com.example.fahad.ifarmerott.details.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,15 +12,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.fahad.ifarmerott.R
-import com.example.fahad.ifarmerott.data.model.Movie
-import com.example.fahad.ifarmerott.repository.MovieRepository
-import com.example.fahad.ifarmerott.viewmodel.DetailsViewModel
+import com.example.fahad.ifarmerott.common.data.model.Movie
+import com.example.fahad.ifarmerott.common.repository.MovieRepository
+import com.example.fahad.ifarmerott.details.viewmodel.DetailsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

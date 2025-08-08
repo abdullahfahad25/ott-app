@@ -1,7 +1,7 @@
-package com.example.fahad.ifarmerott.data.api
+package com.example.fahad.ifarmerott.common.data.api
 
-import com.example.fahad.ifarmerott.data.model.Movie
-import com.example.fahad.ifarmerott.data.model.MovieResponse
+import com.example.fahad.ifarmerott.common.data.model.Movie
+import com.example.fahad.ifarmerott.common.data.model.MovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

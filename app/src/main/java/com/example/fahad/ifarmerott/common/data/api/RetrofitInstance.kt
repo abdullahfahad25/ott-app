@@ -1,4 +1,4 @@
-package com.example.fahad.ifarmerott.data.api
+package com.example.fahad.ifarmerott.common.data.api
 
 import com.example.fahad.ifarmerott.utils.Constants.BASE_URL
 import retrofit2.Retrofit

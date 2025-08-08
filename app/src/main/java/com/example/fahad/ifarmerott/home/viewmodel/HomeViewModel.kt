@@ -1,8 +1,8 @@
-package com.example.fahad.ifarmerott.viewmodel
+package com.example.fahad.ifarmerott.home.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fahad.ifarmerott.data.model.MovieResponse
-import com.example.fahad.ifarmerott.repository.MovieRepository
+import com.example.fahad.ifarmerott.common.data.model.MovieResponse
+import com.example.fahad.ifarmerott.common.repository.MovieRepository
 
 class HomeViewModel(
     private val repository: MovieRepository

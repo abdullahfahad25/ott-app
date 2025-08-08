@@ -1,4 +1,4 @@
-package com.example.fahad.ifarmerott.ui.listing
+package com.example.fahad.ifarmerott.listing.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fahad.ifarmerott.R
-import com.example.fahad.ifarmerott.repository.MovieRepository
-import com.example.fahad.ifarmerott.viewmodel.ListingViewModel
+import com.example.fahad.ifarmerott.common.repository.MovieRepository
+import com.example.fahad.ifarmerott.listing.viemodel.ListingViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

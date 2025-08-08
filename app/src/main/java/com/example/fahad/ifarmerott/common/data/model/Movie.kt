@@ -1,4 +1,4 @@
-package com.example.fahad.ifarmerott.data.model
+package com.example.fahad.ifarmerott.common.data.model
 
 data class Movie(
     val Title: String,
