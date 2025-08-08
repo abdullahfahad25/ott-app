@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -39,9 +40,6 @@ class DetailsActivity : AppCompatActivity() {
 
     private val viewModel = DetailsViewModel(MovieRepository())
 
-    private val job = Job()
-    private val scope = CoroutineScope(Dispatchers.Main + job)
-
     //Video position saved in SharedPreferences
     private lateinit var sharedPreferences: SharedPreferences
     //Current Video position. It is saved
@@ -61,6 +59,7 @@ class DetailsActivity : AppCompatActivity() {
         //get imdbID from intent to fetch details about that particular movie
         imdbId = intent.getStringExtra(Constants.DETAILS_FIELD_IMDBID) ?: DEFAULT_ID
 
+        setupObservers()
         setupPlayer()
         loadMovieDetails(imdbId)
     }
@@ -72,20 +71,28 @@ class DetailsActivity : AppCompatActivity() {
         playerView.player = player
     }
 
-    //load movie details
-    private fun loadMovieDetails(imdbId: String) {
-        scope.launch {
-            try {
-                val response = viewModel.getMovieDetails(imdbId)
-                Log.d(TAG, "loadMovieDetails: $response")
-                if (response?.Response == "True") {
-                    setupViews(response)
-                    displayVideo()
+    private fun setupObservers() {
+        val movieObserver = object : Observer<Movie?> {
+            override fun onChanged(movie: Movie?) {
+                Log.d(TAG, "onChanged: $movie")
+                when {
+                    movie?.Response == "True" -> {
+                        setupViews(movie)
+                        displayVideo()
+                    }
+                    movie != null -> {
+                        Toast.makeText(this@DetailsActivity, "Failed to load movie details", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            } catch (e: Exception) {
-                Toast.makeText(this@DetailsActivity, "Failed to load movie details", Toast.LENGTH_SHORT).show()
             }
         }
+
+        viewModel.movieDetails.observe(this, movieObserver)
+    }
+
+    //load movie details
+    private fun loadMovieDetails(imdbId: String) {
+        viewModel.loadMovieDetails(imdbId)
     }
 
     //movie details
@@ -142,7 +149,7 @@ class DetailsActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
+        viewModel.movieDetails.removeObservers(this)
         player.release()
-        job.cancel()
     }
 }
