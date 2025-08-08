@@ -27,9 +27,11 @@ class ListingActivity : AppCompatActivity() {
     private var currentPage = 1
     private var isLoading = false
 
-    //get filter value s to search from intent. Default is '2022'
+    //get filter value s to search from intent. Default is 'movie'
     private val query: String by lazy { intent.getStringExtra(Constants.LISTING_FIELD_QUERY)
-        ?: Constants.LATEST_MOVIE_YEAR }
+        ?: Constants.LATEST_MOVIE_VALUE }
+    private val year: String? by lazy { intent.getStringExtra(Constants.LISTING_FIELD_YEAR)
+        ?: null}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +104,7 @@ class ListingActivity : AppCompatActivity() {
         Log.d(TAG, "loadMovies: isLoading = $isLoading")
         if (!isLoading) {
             isLoading = true
-            viewModel.searchMovies(query, page)
+            viewModel.searchMovies(query, page, year)
         }
     }
 

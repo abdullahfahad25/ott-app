@@ -66,19 +66,20 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        seeAllLatest.setOnClickListener {
+        seeAllBatman.setOnClickListener {
             val intent = Intent(this, ListingActivity::class.java).apply {
-                //set the field s to filter to get latest movies
-                putExtra(Constants.LISTING_FIELD_QUERY, Constants.LATEST_MOVIE_VALUE)
+                //set the field s to filter to get Batman movies
+                putExtra(Constants.LISTING_FIELD_QUERY, Constants.BATMAN_MOVIE_VALUE)
             }
 
             startActivity(intent)
         }
 
-        seeAllBatman.setOnClickListener {
+        seeAllLatest.setOnClickListener {
             val intent = Intent(this, ListingActivity::class.java).apply {
-                //set the field s to filter to get Batman movies
-                putExtra(Constants.LISTING_FIELD_QUERY, Constants.BATMAN_MOVIE_VALUE)
+                //set the field s to filter to get latest movies
+                putExtra(Constants.LISTING_FIELD_QUERY, Constants.LATEST_MOVIE_VALUE)
+                putExtra(Constants.LISTING_FIELD_YEAR, Constants.LATEST_MOVIE_YEAR)
             }
 
             startActivity(intent)

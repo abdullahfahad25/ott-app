@@ -26,7 +26,7 @@ class ListingViewModel(
     var currentPage = 1
     private var isLastPage = false
 
-    fun searchMovies(query: String, page: Int = 1) {
+    fun searchMovies(query: String, page: Int = 1, year: String? = null) {
         if (isLastPage && page != 1) {
             Log.d(TAG, "searchMovies: last page. ignore")
             return
@@ -35,7 +35,7 @@ class ListingViewModel(
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
-                    repository.searchMovies(query, page)
+                    repository.searchMovies(query, page, year)
                 }
 
                 if (response.Response == "True") {
