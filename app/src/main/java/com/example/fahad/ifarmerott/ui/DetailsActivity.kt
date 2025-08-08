@@ -2,8 +2,11 @@ package com.example.fahad.ifarmerott.ui
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
@@ -81,7 +84,34 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun setupViews(movie: Movie) {
         titleTextView.text = movie.Title
-        descriptionTextView.text =  movie.Plot
+
+        val info = SpannableStringBuilder()
+        info.append("Description: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Plot}\n")
+        info.append("Year: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Year}\n")
+        info.append("Rated: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Rated}\n")
+        info.append("Released: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Released}\n")
+        info.append("Runtime: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Runtime}\n")
+        info.append("Genre: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Genre}\n")
+        info.append("Director: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Director}\n")
+        info.append("Writer: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Writer}\n")
+        info.append("Actors: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Actors}\n")
+        info.append("Language: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Language}\n")
+        info.append("Country: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Country}\n")
+        info.append("Awards: ", StyleSpan(Typeface.BOLD), 0)
+        info.append("${movie.Awards}")
+
+        descriptionTextView.text =  info
     }
 
     private fun displayVideo() {
