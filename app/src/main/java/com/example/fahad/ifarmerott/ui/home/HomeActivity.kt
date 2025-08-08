@@ -30,6 +30,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var carouselAdapter: CarouselAdapter
 
     private lateinit var seeAllLatest: TextView
+    private lateinit var seeAllBatman: TextView
 
     private val viewModel = HomeViewModel(MovieRepository())
 
@@ -45,6 +46,7 @@ class HomeActivity : AppCompatActivity() {
         batmanRecyclerView = findViewById(R.id.batmanRecyclerView)
         latestRecyclerView = findViewById(R.id.latestRecyclerView)
         seeAllLatest = findViewById(R.id.seeAllLatest)
+        seeAllBatman = findViewById(R.id.seeAllBatman)
 
         carouselAdapter = CarouselAdapter()
         batmanAdapter = MovieAdapter()
@@ -66,7 +68,18 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         seeAllLatest.setOnClickListener {
-            val intent = Intent(this, ListingActivity::class.java)
+            val intent = Intent(this, ListingActivity::class.java).apply {
+                putExtra("query", "2022")
+            }
+
+            startActivity(intent)
+        }
+
+        seeAllBatman.setOnClickListener {
+            val intent = Intent(this, ListingActivity::class.java).apply {
+                putExtra("query", "Batman")
+            }
+
             startActivity(intent)
         }
     }
