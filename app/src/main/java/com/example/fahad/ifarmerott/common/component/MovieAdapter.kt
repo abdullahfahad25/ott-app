@@ -33,6 +33,8 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         }
 
         Log.d(TAG, "submitList: list size = ${movies.size}, append = $append")
+        Log.d(TAG, "submitList: movies = ${movies.map { it.Title }.joinToString()}")
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

@@ -11,21 +11,14 @@ import com.example.fahad.ifarmerott.common.component.MovieAdapter
 import com.example.fahad.ifarmerott.common.repository.MovieRepository
 import com.example.fahad.ifarmerott.listing.viemodel.ListingViewModel
 import com.example.fahad.ifarmerott.utils.Constants
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class ListingActivity : AppCompatActivity() {
     private val TAG = "ListingActivity"
+    private val THRESHOLD = 5
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
     private val viewModel = ListingViewModel(MovieRepository())
-
-    private var currentPage = 1
-    private var isLoading = false
 
     //get filter value s to search from intent. Default is 'movie'
     private val query: String by lazy { intent.getStringExtra(Constants.LISTING_FIELD_QUERY)
@@ -46,18 +39,16 @@ class ListingActivity : AppCompatActivity() {
 
         setupObservers()
         setupScrollListener()
-        loadMovies(currentPage)
+        loadNextPage()
     }
 
     private fun setupObservers() {
         viewModel.moviesResponse.observe(this) { response ->
             Log.d(TAG, "setupObservers: movieResponse: $response")
             if (response?.Search?.isNotEmpty() == true) {
-                Log.d(TAG, "setupObservers: currentPage = $currentPage")
+                Log.d(TAG, "setupObservers: currentPage = ${viewModel.currentPage}")
 
-                adapter.submitList(response.Search, currentPage != 1)
-                currentPage = viewModel.currentPage
-                isLoading = false
+                adapter.submitList(response.Search, viewModel.currentPage != 1)
             }
         }
 
@@ -65,7 +56,6 @@ class ListingActivity : AppCompatActivity() {
             Log.d(TAG, "setupObservers: errorResponse: $message")
             if (!message.isNullOrEmpty()) {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                isLoading = false
             }
         }
     }
@@ -87,25 +77,17 @@ class ListingActivity : AppCompatActivity() {
                         "totalItemCount = ${totalItemCount}, " +
                         "firstVisibleItemPosition = $firstVisibleItemPosition")
 
-                Log.d(TAG, "onScrolled: isLoading = $isLoading")
-                if (!isLoading) {
-                    val threshold = totalItemCount - 5
-                    if (visibleItemCount + firstVisibleItemPosition >= threshold
-                        && firstVisibleItemPosition >= 0) {
-                        loadMovies(currentPage + 1)
-                    }
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - THRESHOLD
+                    && firstVisibleItemPosition >= 0) {
+                    loadNextPage()
                 }
             }
         })
     }
 
     //Load movie details
-    private fun loadMovies(page: Int) {
-        Log.d(TAG, "loadMovies: isLoading = $isLoading")
-        if (!isLoading) {
-            isLoading = true
-            viewModel.searchMovies(query, page, year)
-        }
+    private fun loadNextPage() {
+        viewModel.searchMovies(query, null, year)
     }
 
     override fun onDestroy() {
