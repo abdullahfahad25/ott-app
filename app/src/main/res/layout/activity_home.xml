@@ -64,8 +64,8 @@
                 android:layout_height="wrap_content"
                 android:text="See All >"
                 android:gravity="end"
-                android:textSize="14sp"
-                android:textColor="@android:color/black" />
+                android:textStyle="bold"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -107,8 +107,8 @@
                 android:layout_height="wrap_content"
                 android:text="See All >"
                 android:gravity="end"
-                android:textSize="14sp"
-                android:textColor="@android:color/black" />
+                android:textStyle="bold"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

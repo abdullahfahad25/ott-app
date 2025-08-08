@@ -87,7 +87,8 @@ class ListingActivity : AppCompatActivity() {
 
                 Log.d(TAG, "onScrolled: isLoading = $isLoading")
                 if (!isLoading) {
-                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - 5
+                    val threshold = totalItemCount - 5
+                    if (visibleItemCount + firstVisibleItemPosition >= threshold
                         && firstVisibleItemPosition >= 0) {
                         loadMovies(currentPage + 1)
                     }
