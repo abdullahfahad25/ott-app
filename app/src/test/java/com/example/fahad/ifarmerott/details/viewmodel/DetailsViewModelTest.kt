@@ -13,4 +13,9 @@ class DetailsViewModelTest {
     fun movieDetailsTest() {
         assertEquals(null, viewModel.movieDetails.value)
     }
+
+    @Test
+    fun movieDetailsNullTest() {
+        assertNull(viewModel.movieDetails.value)
+    }
 }
