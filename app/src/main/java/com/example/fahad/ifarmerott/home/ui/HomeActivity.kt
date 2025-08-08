@@ -13,6 +13,7 @@ import com.example.fahad.ifarmerott.common.repository.MovieRepository
 import com.example.fahad.ifarmerott.home.viewmodel.HomeViewModel
 import com.example.fahad.ifarmerott.listing.ui.ListingActivity
 import com.example.fahad.ifarmerott.common.component.MovieAdapter
+import com.example.fahad.ifarmerott.utils.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -70,7 +71,7 @@ class HomeActivity : AppCompatActivity() {
         seeAllLatest.setOnClickListener {
             val intent = Intent(this, ListingActivity::class.java).apply {
                 //set the field s to filter to get latest movies
-                putExtra("query", "movie")
+                putExtra(Constants.LISTING_FIELD_QUERY, Constants.LATEST_MOVIE_VALUE)
             }
 
             startActivity(intent)
@@ -79,7 +80,7 @@ class HomeActivity : AppCompatActivity() {
         seeAllBatman.setOnClickListener {
             val intent = Intent(this, ListingActivity::class.java).apply {
                 //set the field s to filter to get Batman movies
-                putExtra("query", "Batman")
+                putExtra(Constants.LISTING_FIELD_QUERY, Constants.BATMAN_MOVIE_VALUE)
             }
 
             startActivity(intent)

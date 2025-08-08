@@ -9,7 +9,6 @@ class DetailsViewModel(
 ): ViewModel() {
 
     suspend fun getMovieDetails(imdbId: String): Movie? {
-        //todo: need to update repository api
         return repository.getMovieDetails(imdbId)
     }
 }

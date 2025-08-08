@@ -19,6 +19,7 @@ import com.example.fahad.ifarmerott.R
 import com.example.fahad.ifarmerott.common.data.model.Movie
 import com.example.fahad.ifarmerott.common.repository.MovieRepository
 import com.example.fahad.ifarmerott.details.viewmodel.DetailsViewModel
+import com.example.fahad.ifarmerott.utils.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,7 +27,6 @@ import kotlinx.coroutines.launch
 
 class DetailsActivity : AppCompatActivity() {
     private val TAG = "DetailsActivity"
-    private val IMDB_ID = "imdbID"
     private val DEFAULT_ID = "tt1285016"    //Default movie: The Social Network
     //Video to be played
     private val VIDEO_URL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
@@ -59,7 +59,7 @@ class DetailsActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("player_prefs", Context.MODE_PRIVATE)
 
         //get imdbID from intent to fetch details about that particular movie
-        imdbId = intent.getStringExtra(IMDB_ID) ?: DEFAULT_ID
+        imdbId = intent.getStringExtra(Constants.DETAILS_FIELD_IMDBID) ?: DEFAULT_ID
 
         setupPlayer()
         loadMovieDetails(imdbId)

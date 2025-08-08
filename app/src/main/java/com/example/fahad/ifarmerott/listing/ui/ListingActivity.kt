@@ -10,6 +10,7 @@ import com.example.fahad.ifarmerott.R
 import com.example.fahad.ifarmerott.common.component.MovieAdapter
 import com.example.fahad.ifarmerott.common.repository.MovieRepository
 import com.example.fahad.ifarmerott.listing.viemodel.ListingViewModel
+import com.example.fahad.ifarmerott.utils.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,8 +18,6 @@ import kotlinx.coroutines.launch
 
 class ListingActivity : AppCompatActivity() {
     private val TAG = "ListingActivity"
-    private val FIELD_QUERY = "query"
-    private val DEFAULT_QUERY = "2022"
     private val PAGE_ITEM_LIMIT = 10
 
     private lateinit var recyclerView: RecyclerView
@@ -31,8 +30,9 @@ class ListingActivity : AppCompatActivity() {
     private var currentPage = 1
     private var isLoading = false
     private var isLastPage = false
-    //get filter value s to search from intent
-    private val query: String by lazy { intent.getStringExtra(FIELD_QUERY) ?: DEFAULT_QUERY }
+    //get filter value s to search from intent. Default is '2022'
+    private val query: String by lazy { intent.getStringExtra(Constants.LISTING_FIELD_QUERY)
+        ?: Constants.LATEST_MOVIE_YEAR }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

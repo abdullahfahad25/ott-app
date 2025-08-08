@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.fahad.ifarmerott.R
 import com.example.fahad.ifarmerott.common.data.model.Movie
 import com.example.fahad.ifarmerott.details.ui.DetailsActivity
+import com.example.fahad.ifarmerott.utils.Constants
 
 class CarouselAdapter: RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
     private val movies = mutableListOf<Movie>()
@@ -30,7 +31,7 @@ class CarouselAdapter: RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>(
         holder.itemView.setOnClickListener {
             val context = it.context
             val intent = Intent(context, DetailsActivity::class.java).apply {
-                putExtra("imdbID", movie.imdbID)
+                putExtra(Constants.DETAILS_FIELD_IMDBID, movie.imdbID)
             }
 
             context.startActivity(intent)
