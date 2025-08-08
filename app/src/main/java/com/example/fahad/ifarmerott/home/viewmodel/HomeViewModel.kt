@@ -14,18 +14,6 @@ import kotlinx.coroutines.withContext
 class HomeViewModel(
     private val repository: MovieRepository
 ): ViewModel() {
-//    suspend fun loadBatmanMovies(): MovieResponse {
-//        return repository.searchMovies(Constants.BATMAN_MOVIE_VALUE, 1)
-//    }
-//
-//    suspend fun loadLatestMovies(): MovieResponse {
-//        return repository.searchMovies(Constants.LATEST_MOVIE_VALUE, 1, Constants.LATEST_MOVIE_YEAR)
-//    }
-//
-//    suspend fun loadCarouselMovies(): MovieResponse {
-//        return repository.searchMovies(Constants.CAROUSEL_MOVIE_VALUE, 1)
-//    }
-
     private val _carouselMovies = MutableLiveData<MovieResponse>()
     val carouselMovies: LiveData<MovieResponse> get() = _carouselMovies
 
