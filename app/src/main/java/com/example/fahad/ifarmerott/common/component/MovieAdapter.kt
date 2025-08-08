@@ -1,4 +1,4 @@
-package com.example.fahad.ifarmerott.listing.ui
+package com.example.fahad.ifarmerott.common.component
 
 import android.content.Intent
 import android.util.Log

@@ -3,11 +3,11 @@ package com.example.fahad.ifarmerott.listing.ui
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fahad.ifarmerott.R
+import com.example.fahad.ifarmerott.common.component.MovieAdapter
 import com.example.fahad.ifarmerott.common.repository.MovieRepository
 import com.example.fahad.ifarmerott.listing.viemodel.ListingViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -31,11 +31,13 @@ class ListingActivity : AppCompatActivity() {
     private var currentPage = 1
     private var isLoading = false
     private var isLastPage = false
+    //get filter value s to search from intent
     private val query: String by lazy { intent.getStringExtra(FIELD_QUERY) ?: DEFAULT_QUERY }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        Log.d(TAG, "onCreate")
         setContentView(R.layout.activity_listing)
 
         recyclerView = findViewById(R.id.listingRecyclerView)
@@ -47,6 +49,7 @@ class ListingActivity : AppCompatActivity() {
         loadMovies(currentPage)
     }
 
+    //Setup scroll listener for pagination
     private fun setupScrollListener() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
@@ -59,7 +62,7 @@ class ListingActivity : AppCompatActivity() {
                 val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
                 Log.d(TAG, "onScrolled: visibleItemCount = ${visibleItemCount}, " +
                         "totalItemCount = ${totalItemCount}, " +
-                        "firstVisibleItemPosition = ${firstVisibleItemPosition}")
+                        "firstVisibleItemPosition = $firstVisibleItemPosition")
 
                 if (!isLoading && !isLastPage) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - 5
@@ -71,6 +74,7 @@ class ListingActivity : AppCompatActivity() {
         })
     }
 
+    //Load movie details
     private fun loadMovies(page: Int) {
         isLoading = true
         scope.launch {
@@ -106,6 +110,7 @@ class ListingActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(TAG, "onDestroy")
         job.cancel()
     }
 }

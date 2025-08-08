@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,7 @@ import com.example.fahad.ifarmerott.R
 import com.example.fahad.ifarmerott.common.repository.MovieRepository
 import com.example.fahad.ifarmerott.home.viewmodel.HomeViewModel
 import com.example.fahad.ifarmerott.listing.ui.ListingActivity
-import com.example.fahad.ifarmerott.listing.ui.MovieAdapter
+import com.example.fahad.ifarmerott.common.component.MovieAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -39,7 +38,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        Log.d(TAG, "onCreate")
         setContentView(R.layout.activity_home)
 
         carouselViewPager = findViewById(R.id.carouselViewPager)
@@ -69,7 +69,8 @@ class HomeActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         seeAllLatest.setOnClickListener {
             val intent = Intent(this, ListingActivity::class.java).apply {
-                putExtra("query", "2022")
+                //set the field s to filter to get latest movies
+                putExtra("query", "movie")
             }
 
             startActivity(intent)
@@ -77,6 +78,7 @@ class HomeActivity : AppCompatActivity() {
 
         seeAllBatman.setOnClickListener {
             val intent = Intent(this, ListingActivity::class.java).apply {
+                //set the field s to filter to get Batman movies
                 putExtra("query", "Batman")
             }
 
@@ -84,6 +86,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    //filter used for carousel movies is 'Marvel'
     private fun loadCarouselMovies() {
         scope.launch {
             try {
@@ -131,6 +134,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(TAG, "onDestroy")
         job.cancel()
     }
 }
