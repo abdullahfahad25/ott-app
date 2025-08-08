@@ -50,7 +50,7 @@ class ListingActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.moviesResponse.observe(this) { response ->
             Log.d(TAG, "setupObservers: movieResponse: $response")
-            if (response != null && response.Search.isNotEmpty()) {
+            if (response?.Search?.isNotEmpty() == true) {
                 Log.d(TAG, "setupObservers: currentPage = $currentPage")
                 if (currentPage == 1) {
                     adapter.submitList(response.Search)
@@ -113,5 +113,7 @@ class ListingActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
+        viewModel.moviesResponse.removeObservers(this)
+        viewModel.errorResponse.removeObservers(this)
     }
 }

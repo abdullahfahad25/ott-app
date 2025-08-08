@@ -34,9 +34,6 @@ class HomeActivity : AppCompatActivity() {
 
     private val viewModel = HomeViewModel(MovieRepository())
 
-    private val job = Job()
-    private val scope = CoroutineScope(Dispatchers.Main + job)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,6 +58,7 @@ class HomeActivity : AppCompatActivity() {
         latestRecyclerView.adapter = latestAdapter
 
         setupClickListeners()
+        setupObservers()
 
         loadCarouselMovies()
         loadBatmanMovies()
@@ -87,55 +85,47 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    //filter used for carousel movies is 'Marvel'
-    private fun loadCarouselMovies() {
-        scope.launch {
-            try {
-                val response = viewModel.loadCarouselMovies()
-                Log.d(TAG, "loadCarouselMovies: $response")
-
-                if (response.Response == "True") {
-                    carouselAdapter.submitList(response.Search.take(5))
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+    private fun setupObservers() {
+        viewModel.carouselMovies.observe(this) { response ->
+            Log.d(TAG, "setupObservers: Carousel response: $response")
+            if (response.Response == "True") {
+                carouselAdapter.submitList(response.Search.take(5))
             }
         }
+
+        viewModel.batmanMovies.observe(this) { response ->
+            Log.d(TAG, "setupObservers: Batman response: $response")
+            if (response.Response == "True") {
+                batmanAdapter.submitList(response.Search)
+            }
+        }
+
+        viewModel.latestMovies.observe(this) { response ->
+            Log.d(TAG, "setupObservers: Latest movie response: $response")
+            if (response.Response == "True") {
+                latestAdapter.submitList(response.Search)
+            }
+        }
+    }
+
+    //filter used for carousel movies is 'Marvel'
+    private fun loadCarouselMovies() {
+        viewModel.loadCarouselMovies()
     }
 
     private fun loadBatmanMovies() {
-        scope.launch {
-            try {
-                val response = viewModel.loadBatmanMovies()
-                Log.d(TAG, "loadBatmanMovies: $response")
-
-                if (response.Response == "True") {
-                    batmanAdapter.submitList(response.Search)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        viewModel.loadBatmanMovies()
     }
 
     private fun loadLatestMovies() {
-        scope.launch {
-            try {
-                val response = viewModel.loadLatestMovies()
-                Log.d(TAG, "loadLatestMovies: $response")
-
-                if (response.Response == "True") {
-                    latestAdapter.submitList(response.Search)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        viewModel.loadLatestMovies()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
-        job.cancel()
+        viewModel.carouselMovies.removeObservers(this)
+        viewModel.batmanMovies.removeObservers(this)
+        viewModel.latestMovies.removeObservers(this)
     }
 }
