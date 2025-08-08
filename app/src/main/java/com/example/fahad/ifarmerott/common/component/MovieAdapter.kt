@@ -17,13 +17,22 @@ import com.example.fahad.ifarmerott.utils.Constants
 class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     private val TAG = "MovieAdapter"
 
-    val movies = mutableListOf<Movie>()
+    private val movies = mutableListOf<Movie>()
 
-    fun submitList(list: List<Movie>) {
-        movies.clear()
-        movies.addAll(list)
-        Log.d(TAG, "submitList: list size = ${movies.size}")
-        notifyDataSetChanged()      //todo: optimization
+    fun submitList(list: List<Movie>, append: Boolean = false) {
+        if (append) {
+            val oldSize = movies.size
+            movies.addAll(list)
+
+            //Optimized to avoid flicker and animation jump
+            notifyItemRangeInserted(oldSize, list.size)
+        } else {
+            movies.clear()
+            movies.addAll(list)
+            notifyDataSetChanged()
+        }
+
+        Log.d(TAG, "submitList: list size = ${movies.size}, append = $append")
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

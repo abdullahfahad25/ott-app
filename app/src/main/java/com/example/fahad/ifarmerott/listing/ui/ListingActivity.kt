@@ -52,13 +52,8 @@ class ListingActivity : AppCompatActivity() {
             Log.d(TAG, "setupObservers: movieResponse: $response")
             if (response?.Search?.isNotEmpty() == true) {
                 Log.d(TAG, "setupObservers: currentPage = $currentPage")
-                if (currentPage == 1) {
-                    adapter.submitList(response.Search)
-                } else {
-                    val currentList = adapter.movies.toMutableList()
-                    currentList.addAll(response.Search)
-                    adapter.submitList(currentList)
-                }
+
+                adapter.submitList(response.Search, currentPage != 1)
                 currentPage = viewModel.currentPage
                 isLoading = false
             }
