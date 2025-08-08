@@ -15,21 +15,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 class ListingActivity : AppCompatActivity() {
     private val TAG = "ListingActivity"
-    private val PAGE_ITEM_LIMIT = 10
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
     private val viewModel = ListingViewModel(MovieRepository())
 
-    private val job = Job()
-    private val scope = CoroutineScope(Dispatchers.Main + job)
-
     private var currentPage = 1
     private var isLoading = false
-    private var isLastPage = false
+
     //get filter value s to search from intent. Default is '2022'
     private val query: String by lazy { intent.getStringExtra(Constants.LISTING_FIELD_QUERY)
         ?: Constants.LATEST_MOVIE_YEAR }
@@ -45,16 +42,45 @@ class ListingActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+        setupObservers()
         setupScrollListener()
         loadMovies(currentPage)
+    }
+
+    private fun setupObservers() {
+        viewModel.moviesResponse.observe(this) { response ->
+            Log.d(TAG, "setupObservers: movieResponse: $response")
+            if (response != null && response.Search.isNotEmpty()) {
+                Log.d(TAG, "setupObservers: currentPage = $currentPage")
+                if (currentPage == 1) {
+                    adapter.submitList(response.Search)
+                } else {
+                    val currentList = adapter.movies.toMutableList()
+                    currentList.addAll(response.Search)
+                    adapter.submitList(currentList)
+                }
+                currentPage = viewModel.currentPage
+                isLoading = false
+            }
+        }
+
+        viewModel.errorResponse.observe(this) { message ->
+            Log.d(TAG, "setupObservers: errorResponse: $message")
+            if (!message.isNullOrEmpty()) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                isLoading = false
+            }
+        }
     }
 
     //Setup scroll listener for pagination
     private fun setupScrollListener() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                if (dy <= 0) 
+                if (dy <= 0) {
+                    Log.d(TAG, "onScrolled: dy <= 0. return")
                     return
+                }
 
                 val layoutManager = rv.layoutManager as LinearLayoutManager
                 val visibleItemCount = layoutManager.childCount
@@ -64,7 +90,8 @@ class ListingActivity : AppCompatActivity() {
                         "totalItemCount = ${totalItemCount}, " +
                         "firstVisibleItemPosition = $firstVisibleItemPosition")
 
-                if (!isLoading && !isLastPage) {
+                Log.d(TAG, "onScrolled: isLoading = $isLoading")
+                if (!isLoading) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - 5
                         && firstVisibleItemPosition >= 0) {
                         loadMovies(currentPage + 1)
@@ -76,41 +103,15 @@ class ListingActivity : AppCompatActivity() {
 
     //Load movie details
     private fun loadMovies(page: Int) {
-        isLoading = true
-        scope.launch {
-            try {
-                //Default filter value is '2022'
-                val response = viewModel.searchMovies(query, page)
-                Log.d(TAG, "loadMovies: page = ${page}, Search size = ${response.Search.size}")
-                
-                if (response.Response == "True") {
-                    if (page == 1) {
-                        adapter.submitList(response.Search)
-                    } else {
-                        val currentList = adapter.movies.toMutableList()
-                        currentList.addAll(response.Search)
-                        adapter.submitList(currentList)
-                    }
-                    currentPage = page
-                    // If less than 10 results (OMDB default page size), consider last page
-                    if (response.Search.size < PAGE_ITEM_LIMIT) {
-                        isLastPage = true
-                    }
-                } else {
-                    Toast.makeText(this@ListingActivity, "No more results", Toast.LENGTH_SHORT).show()
-                    isLastPage = true
-                }
-            } catch (e: Exception) {
-                Toast.makeText(this@ListingActivity, "Error loading movies", Toast.LENGTH_SHORT).show()
-            }
-
-            isLoading = false
+        Log.d(TAG, "loadMovies: isLoading = $isLoading")
+        if (!isLoading) {
+            isLoading = true
+            viewModel.searchMovies(query, page)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
-        job.cancel()
     }
 }

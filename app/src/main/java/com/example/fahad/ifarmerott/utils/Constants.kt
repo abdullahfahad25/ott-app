@@ -8,6 +8,7 @@ object Constants {
 
     //Listing screen related constants
     const val LISTING_FIELD_QUERY = "query"
+    const val PAGE_ITEM_LIMIT = 10
 
     //Home screen related constants
     const val CAROUSEL_MOVIE_VALUE = "Marvel"
