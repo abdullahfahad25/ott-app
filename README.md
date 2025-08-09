@@ -34,6 +34,9 @@ Tech Stack used:
 6. AGP version: 8.7.3
 7. JDK version: 21
 
+Architecture:
+    MVVM
+
 How to Build and Run:
 Prerequisites:
 1. Android Studio (Recommended version: Lady Bug or higher)
