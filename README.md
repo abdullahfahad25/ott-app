@@ -26,9 +26,31 @@ How it works:
     video will be played.
 
 Tech Stack used:
-1. Language: Kotlin
-2. Retrofit2
-3. GSON
-4. Glide
+1. Language: Kotlin version: 1.9.24
+2. Retrofit2 version: 2.11.0
+3. GSON Converter version: 2.11.0
+4. Glide version: 4.16.0
 5. Gradle version: 8.9
 6. AGP version: 8.7.3
+7. JDK version: 21
+
+How to Build and Run:
+Prerequisites:
+1. Android Studio (Recommended version: Lady Bug or higher)
+2. JDK 11 or higher
+3. Android device running Android 9.0 Pie or above. App is optimized for Android 13/ Api level 35
+4. Android SDK 35 need to be installed to compile the project
+
+Build and Run:
+1. Clone the repository
+2. Open the project in Android Studio
+    i. Launch Android Studio
+    ii. Click Open an existing project
+    iii. Select the project folder that is just cloned
+3. Sync Gradle
+    i. Click File > Sync Project with Gradle Files
+4. Configure Kotlin and Android Gradle Plugin versions
+    i. These are set in the build.gradle files
+5. Run the app
+    i. Connect an Android device via USB or start an emulator
+    ii. Click the Run button
